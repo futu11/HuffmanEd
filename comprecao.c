@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "comprecao.h"
+#include <math.h>
 
 #define MAX 256
 tListaNo * getListaNo(char elemento){
@@ -228,13 +229,17 @@ int ListaRepeticoes(tListaNo **lista, tRepeticao **repeticao){
 
 void CriaArvore(tNo **arv, tRepeticao **repeticao){
 
-    int i;
-    tNo leafarray[100];
+    int i = 0;
+    tNo *leafarray[100];
     for(i = 0; (*repeticao)->proxalfa != NULL; i++){
         leafarray[i] = getNo((*repeticao)->elemento, (*repeticao)->repeticao);
         (*repeticao) = (*repeticao)->proxalfa;
+        printf("%d", i);
+            if((*repeticao)->proxalfa == NULL){
+                    i++;
+                leafarray[i] = getNo((*repeticao)->elemento, (*repeticao)->repeticao);
+            }
     }
-
 }
 
 int main(){
@@ -258,13 +263,15 @@ int main(){
     listateste = lista;
     ListaRepeticoes(&lista, &repeticao);
 
-    while(listateste->prox != NULL){
-        printf("\n%c", listateste->elemento);
-        listateste = listateste->prox;
-        if(listateste->prox == NULL)
-            printf("%c\n", listateste->elemento);
-    }
-
-  //  CriaArvore(&arvore, &repeticao);
+  /*  while(repeticao->proxalfa != NULL){
+        printf("\n%c", repeticao->elemento);
+        printf(", %d", repeticao->repeticao);
+        repeticao = repeticao->proxalfa;
+        if(repeticao->proxalfa == NULL){
+            printf("%c\n", repeticao->elemento);
+            printf(", %d", repeticao->repeticao);
+        }
+    }*/
+    CriaArvore(&arvore, &repeticao);
 return 0;
 }

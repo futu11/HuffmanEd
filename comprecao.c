@@ -231,6 +231,10 @@ void CriaArvore(tNo **arv, tRepeticao **repeticao){
 
     int i = 0;
     tNo *leafarray[100];
+    while(i < 100){
+        leafarray[i] = NULL;
+        i++;
+    }
     for(i = 0; (*repeticao)->proxalfa != NULL; i++){
         leafarray[i] = getNo((*repeticao)->elemento, (*repeticao)->repeticao);
         (*repeticao) = (*repeticao)->proxalfa;
@@ -239,6 +243,15 @@ void CriaArvore(tNo **arv, tRepeticao **repeticao){
                     i++;
                 leafarray[i] = getNo((*repeticao)->elemento, (*repeticao)->repeticao);
             }
+
+    }
+    while(leafarray != NULL){
+        (*arv)->esq = leafarray[i];
+        (*arv)->dir = leafarray[i+1];
+        (*arv)->repeticao = leafarray[i]->repeticao + leafarray[i+1]->repeticao;
+        for(i = 2; leafarray != NULL; i++){
+            leafarray
+        }
     }
 }
 

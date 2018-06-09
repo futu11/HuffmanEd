@@ -29,8 +29,10 @@ extern void IniciaLista(tListaNo **lista);
 extern int InsereElementoEmOrdem(tListaNo **lista, char elemento);
 extern void IniciaArvore(tNo **arv);
 extern void CriaArvore(tNo**arv, tRepeticao **repeticao);
+extern tNo * CriaArvoreAux(tNo *ar[]);
 extern int ListaRepeticoes(tListaNo **lista, tRepeticao **repeticao);
 extern void Armazena(tNo **arv, tListaNo *lista);
 extern int InsereElementoEmOrdemRepeticao(tRepeticao **repeticao, char elemento , int repet);
+
 
 #endif // COMPRECAO_H_INCLUDED

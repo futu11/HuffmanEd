@@ -276,11 +276,59 @@ tNo * CriaArvoreAux(tNo *ar[]){
     if(ar[1] == NULL){
         tNo *arvore = malloc(sizeof(tNo));
         arvore = ar[0];
-    printf("%d", arvore->repeticao);
        // printf("%d", (*arv)->repeticao);
         return arvore;
     }
     CriaArvoreAux(ar);
+}
+void CodificaArvore(tNo *arv, int ar[], int aux) {
+    int i;
+    if(arv != NULL) {
+        printf("%d\n",arv->repeticao);
+        if(arv->esq == NULL && arv->dir == NULL){
+            i = 0;
+            while(i != 9){
+                arv->cod[i] = ar[i];
+                i++;
+            }
+            i = 0;
+            printf("O codigo eh:");
+            while(arv->cod[i] != 3){
+                printf("%d", arv->cod[i]);
+                i++;
+            }
+            printf("\nO elemento eh: %c", arv->elemento);
+            printf("\n");
+        }
+        if(arv->esq != NULL)
+            ar[aux] = 0;
+
+        CodificaArvore(arv->esq, ar, aux + 1);
+        if(arv->dir != NULL)
+            ar[aux] = 1;
+
+        CodificaArvore(arv->dir, ar, aux + 1);
+    }
+}
+int CodificaLista(tNo *arv, char elemento[], int aux, int i, int cod){
+    if(arv != NULL){
+        if(arv != NULL && arv->elemento == elemento[i]){
+            int i = 0;
+            while(arv->cod[i] != 3){
+                printf("%d", arv->cod[i]);
+                i++;
+            }
+
+        }
+        CodificaLista(arv->esq, elemento, aux + 1, i, cod);
+        CodificaLista(arv->dir, elemento, aux + 1, i, cod);
+    }
+    if(arv != NULL && aux == 0 && elemento[i + 1] != 0){
+            i = i + 1;
+        CodificaLista(arv, elemento, aux, i, cod);
+    }
+    if(elemento[i] == 0)
+        return cod;
 }
 
 int main(){
@@ -304,20 +352,18 @@ int main(){
     listateste = lista;
     ListaRepeticoes(&lista, &repeticao);
     CriaArvore(&arvore, &repeticao);
-    tNo *arvoreteste;
-    IniciaArvore(&arvoreteste);
-    arvoreteste = arvore;
-    printf("%d", arvore->repeticao);
-   // printf("%d", arvoreteste->repeticao);
+    int ar[10];
+    i = 0;
+    while(i != 9){
+        ar[i] = 3;
+        i++;
+    }
+    int cod = 0;
+    int aux = 0;
+    CodificaArvore(arvore, ar, aux);
+    aux = 0;
+    i = 0;
+    CodificaLista(arvore, elemento, aux, i, cod);
 
- /*   while(repeticao->proxalfa != NULL){
-        printf("\n%c", repeticao->elemento);
-        printf(", %d", repeticao->repeticao);
-        repeticao = repeticao->proxalfa;
-        if(repeticao->proxalfa == NULL){
-            printf("%c\n", repeticao->elemento);
-            printf(", %d", repeticao->repeticao);
-        }
-    }*/
 return 0;
 }

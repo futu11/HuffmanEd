@@ -4,6 +4,7 @@
 typedef struct no{
     char elemento;
     int repeticao;
+    int cod[10];
     struct no *esq;
     struct no *dir;
 }tNo;
@@ -33,6 +34,8 @@ extern tNo * CriaArvoreAux(tNo *ar[]);
 extern int ListaRepeticoes(tListaNo **lista, tRepeticao **repeticao);
 extern void Armazena(tNo **arv, tListaNo *lista);
 extern int InsereElementoEmOrdemRepeticao(tRepeticao **repeticao, char elemento , int repet);
+extern void CodificaArvore(tNo *arv, int ar[], int aux);
+extern int CodificaLista(tNo *arv, char elemento[], int aux, int i, int cod);
 
 
 #endif // COMPRECAO_H_INCLUDED

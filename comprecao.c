@@ -152,22 +152,24 @@ int ListaRepeticoes(tListaNo **lista, tRepeticao **repeticao){
     while(anterior->proxalfa != menor && anterior != menor){
         anterior = anterior->proxalfa;
     }
+
     if(anterior->proxalfa == menor){
         posterior = menor->proxalfa;
         menor->proxalfa = *repeticao;
         *repeticao = menor;
         anterior->proxalfa = posterior;
     }
+
     anterior = *repeticao;
     if(anterior->proxalfa == NULL)
         return 0;
 
     if(anterior->proxalfa->proxalfa == NULL)
         return 0;
+
     anterior = *repeticao;
     anterior = anterior->proxalfa;
     posterior = anterior->proxalfa;
-
     while(posterior != NULL){
         if(posterior->repeticao > anterior->repeticao){
             anterior = posterior;
@@ -194,7 +196,7 @@ int ListaRepeticoes(tListaNo **lista, tRepeticao **repeticao){
     aux = *repeticao;
     aux3 = *repeticao;
     while(aux->proxalfa != maior){
-        while(posterior != NULL && posterior->repeticao > anterior->repeticao){
+        while(posterior->proxalfa != NULL && posterior->repeticao > anterior->repeticao && anterior->repeticao > aux->repeticao ){
             posterior = posterior->proxalfa;
         }
         while(posterior->proxalfa != NULL){
@@ -222,37 +224,63 @@ int ListaRepeticoes(tListaNo **lista, tRepeticao **repeticao){
         posterior = anterior->proxalfa;
         menor = aux;
         aux3 = *repeticao;
-
     }
+
     return 0;
 }
 
 void CriaArvore(tNo **arv, tRepeticao **repeticao){
 
     int i = 0;
-    tNo *leafarray[100];
-    while(i < 100){
-        leafarray[i] = NULL;
-        i++;
-    }
+    tNo *leafarray[100] = {NULL};
     for(i = 0; (*repeticao)->proxalfa != NULL; i++){
         leafarray[i] = getNo((*repeticao)->elemento, (*repeticao)->repeticao);
         (*repeticao) = (*repeticao)->proxalfa;
-        printf("%d", i);
             if((*repeticao)->proxalfa == NULL){
                     i++;
                 leafarray[i] = getNo((*repeticao)->elemento, (*repeticao)->repeticao);
             }
 
     }
-    while(leafarray != NULL){
-        (*arv)->esq = leafarray[i];
-        (*arv)->dir = leafarray[i+1];
-        (*arv)->repeticao = leafarray[i]->repeticao + leafarray[i+1]->repeticao;
-        for(i = 2; leafarray != NULL; i++){
-            leafarray
-        }
+   *arv = CriaArvoreAux(leafarray);
+
+
+}
+tNo * CriaArvoreAux(tNo *ar[]){
+
+    int i, count;
+    tNo *no;
+    no = malloc(sizeof(tNo));
+
+    no->esq = ar[0];
+    no->dir = ar[1];
+    if(ar[1] != NULL){
+        no->repeticao = ar[0]->repeticao + ar[1]->repeticao;
+    }else{
+    no->repeticao = ar[0]->repeticao;
     }
+    for(i = 2; ar[i] != NULL; i++){
+        ar[i - 2] = ar[i];
+    }
+    ar[i - 2] = NULL;
+    ar[i - 1] = NULL;
+    count = 0;
+    while(ar[count] != NULL && no->repeticao >= ar[count]->repeticao){
+        count++;
+    }
+    while(ar[count] != NULL && count < i){
+        ar[i - 1] = ar[i - 2];
+        i --;
+    }
+    ar[count] = no;
+    if(ar[1] == NULL){
+        tNo *arvore = malloc(sizeof(tNo));
+        arvore = ar[0];
+    printf("%d", arvore->repeticao);
+       // printf("%d", (*arv)->repeticao);
+        return arvore;
+    }
+    CriaArvoreAux(ar);
 }
 
 int main(){
@@ -275,8 +303,14 @@ int main(){
     }
     listateste = lista;
     ListaRepeticoes(&lista, &repeticao);
+    CriaArvore(&arvore, &repeticao);
+    tNo *arvoreteste;
+    IniciaArvore(&arvoreteste);
+    arvoreteste = arvore;
+    printf("%d", arvore->repeticao);
+   // printf("%d", arvoreteste->repeticao);
 
-  /*  while(repeticao->proxalfa != NULL){
+ /*   while(repeticao->proxalfa != NULL){
         printf("\n%c", repeticao->elemento);
         printf(", %d", repeticao->repeticao);
         repeticao = repeticao->proxalfa;
@@ -285,6 +319,5 @@ int main(){
             printf(", %d", repeticao->repeticao);
         }
     }*/
-    CriaArvore(&arvore, &repeticao);
 return 0;
 }

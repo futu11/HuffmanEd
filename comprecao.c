@@ -311,25 +311,24 @@ void CodificaArvore(tNo *arv, int ar[], int aux) {
         CodificaArvore(arv->dir, ar, aux + 1);
     }
 }
-int CodificaLista(tNo *arv, char elemento[], int aux, int i, int cod){
+int CodificaLista(tNo *arv, char elemento, int aux, FILE* fp){
     if(arv != NULL){
-        if(arv != NULL && arv->elemento == elemento[i]){
+        if(arv != NULL && arv->elemento == elemento){
             int i = 0;
             while(arv->cod[i] != 3){
+                EscreveArquivo(arv->cod[i], fp);
                 printf("%d", arv->cod[i]);
                 i++;
             }
 
         }
-        CodificaLista(arv->esq, elemento, aux + 1, i, cod);
-        CodificaLista(arv->dir, elemento, aux + 1, i, cod);
+        CodificaLista(arv->esq, elemento, aux + 1, fp);
+        CodificaLista(arv->dir, elemento, aux + 1, fp);
     }
-    if(arv != NULL && aux == 0 && elemento[i + 1] != 0){
+ /*   if(arv != NULL && aux == 0 && elemento[i + 1] != 0){
             i = i + 1;
-        CodificaLista(arv, elemento, aux, i, cod);
-    }
-    if(elemento[i] == 0)
-        return cod;
+        CodificaLista(arv, elemento, aux, i);
+    }*/
 }
 
 int Chars(const char* arq){
@@ -363,8 +362,8 @@ void LeArquivo(int tam, char elemento[], const char* arq){
 
 }
 
-void EscreveArquivo(char cod, FILE* fp){
-    fputc(cod, fp);
+void EscreveArquivo(int cod, FILE* fp){
+    fprintf(fp, "%d", cod);
 }
 int main(){
     int r;
@@ -395,18 +394,16 @@ int main(){
         ar[i] = 3;
         i++;
     }
-    int cod = 0;
     int aux = 0;
     CodificaArvore(arvore, ar, aux);
     aux = 0;
     i = 0;
-    CodificaLista(arvore, elemento, aux, i, cod);
-    char a = 'a';
-    char b = 'b';
     FILE *fp;
     fp = fopen("/Users/win/Documents/ED/Projeto_Final/Comprimido.txt", "w");
-    EscreveArquivo(b, fp);
-    EscreveArquivo(a, fp);
+    while(i < (r - 1)){
+        i++;
+        CodificaLista(arvore, elemento[i], aux, fp);
+    }
     fclose(fp);
 return 0;
 }

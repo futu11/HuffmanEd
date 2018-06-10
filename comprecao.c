@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "comprecao.h"
-#include <math.h>
+#include  <string.h>
 
 #define MAX 256
 tListaNo * getListaNo(char elemento){
@@ -295,6 +295,7 @@ void CodificaArvore(tNo *arv, int ar[], int aux) {
             printf("O codigo eh:");
             while(arv->cod[i] != 3){
                 printf("%d", arv->cod[i]);
+               // EscreveArquivo(arv->cod[i], "/Users/win/Documents/ED/Projeto_Final/Comprimido.txt");
                 i++;
             }
             printf("\nO elemento eh: %c", arv->elemento);
@@ -331,7 +332,46 @@ int CodificaLista(tNo *arv, char elemento[], int aux, int i, int cod){
         return cod;
 }
 
+int Chars(const char* arq){
+    int qLetras = 0;
+    FILE *fp;
+    char proxchar;
+    fp = fopen(arq, "r");
+    if (fp == NULL){
+        puts("arquivo nao encontrado");
+        exit(1);
+    }
+    proxchar = getc(fp);
+    while(proxchar != EOF){
+        qLetras ++;
+        proxchar = getc(fp);
+    }
+    fclose(fp);
+    return qLetras;
+
+}
+
+void LeArquivo(int tam, char elemento[], const char* arq){
+    FILE *fp;
+    fp = fopen(arq, "r");
+    if(fp == NULL){
+        puts("arquivo nao encontrado");
+        exit(1);
+    }
+    fgets(elemento, tam + 1, fp);
+    fclose(fp);
+
+}
+
+void EscreveArquivo(char cod, FILE* fp){
+    fputc(cod, fp);
+}
 int main(){
+    int r;
+    r = Chars("/Users/win/Documents/ED/Projeto_Final/Texto.txt");
+    printf("%d\n", r);
+    char elemento[r + 1];
+    LeArquivo(r, elemento, "/Users/win/Documents/ED/Projeto_Final/Texto.txt");
     tListaNo *lista;
     IniciaLista(&lista);
     tRepeticao *repeticao;
@@ -342,10 +382,7 @@ int main(){
     IniciaArvore(&arvore);
 
     int i = 0;
-    char elemento[256] = {0};
-    printf("Insira uma frase para ser comprimida:\n");
-    scanf("%s", elemento);
-    while(elemento[i] != 0){
+    while(i < r){
         InsereElementoEmOrdem(&lista, elemento[i]);
         i++;
     }
@@ -364,6 +401,12 @@ int main(){
     aux = 0;
     i = 0;
     CodificaLista(arvore, elemento, aux, i, cod);
-
+    char a = 'a';
+    char b = 'b';
+    FILE *fp;
+    fp = fopen("/Users/win/Documents/ED/Projeto_Final/Comprimido.txt", "w");
+    EscreveArquivo(b, fp);
+    EscreveArquivo(a, fp);
+    fclose(fp);
 return 0;
 }

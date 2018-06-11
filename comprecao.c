@@ -276,15 +276,13 @@ tNo * CriaArvoreAux(tNo *ar[]){
     if(ar[1] == NULL){
         tNo *arvore = malloc(sizeof(tNo));
         arvore = ar[0];
-       // printf("%d", (*arv)->repeticao);
         return arvore;
     }
     CriaArvoreAux(ar);
 }
-void CodificaArvore(tNo *arv, int ar[], int aux) {
+void CodificaArvore(tNo *arv, int ar[], int aux, FILE* fp) {
     int i;
     if(arv != NULL) {
-        printf("%d\n",arv->repeticao);
         if(arv->esq == NULL && arv->dir == NULL){
             i = 0;
             while(i != 9){
@@ -292,23 +290,21 @@ void CodificaArvore(tNo *arv, int ar[], int aux) {
                 i++;
             }
             i = 0;
-            printf("O codigo eh:");
             while(arv->cod[i] != 3){
                 printf("%d", arv->cod[i]);
-               // EscreveArquivo(arv->cod[i], "/Users/win/Documents/ED/Projeto_Final/Comprimido.txt");
                 i++;
             }
-            printf("\nO elemento eh: %c", arv->elemento);
+            printf(":%c", arv->elemento);
             printf("\n");
         }
         if(arv->esq != NULL)
             ar[aux] = 0;
 
-        CodificaArvore(arv->esq, ar, aux + 1);
+        CodificaArvore(arv->esq, ar, aux + 1, fp);
         if(arv->dir != NULL)
             ar[aux] = 1;
 
-        CodificaArvore(arv->dir, ar, aux + 1);
+        CodificaArvore(arv->dir, ar, aux + 1, fp);
     }
 }
 int CodificaLista(tNo *arv, char elemento, int aux, FILE* fp){
@@ -325,10 +321,6 @@ int CodificaLista(tNo *arv, char elemento, int aux, FILE* fp){
         CodificaLista(arv->esq, elemento, aux + 1, fp);
         CodificaLista(arv->dir, elemento, aux + 1, fp);
     }
- /*   if(arv != NULL && aux == 0 && elemento[i + 1] != 0){
-            i = i + 1;
-        CodificaLista(arv, elemento, aux, i);
-    }*/
 }
 
 int Chars(const char* arq){
@@ -365,6 +357,22 @@ void LeArquivo(int tam, char elemento[], const char* arq){
 void EscreveArquivo(int cod, FILE* fp){
     fprintf(fp, "%d", cod);
 }
+void EscreveArvore(char elemento, tNo *arv, FILE* fp){
+    if(arv != NULL){
+        if(arv->elemento == elemento){
+            fprintf(fp, "%c:" , elemento);
+            int i = 0;
+            while(arv->cod[i] != 3){
+                fprintf(fp, "%d", arv->cod[i]);
+                i++;
+            }
+            char n = '\n';
+            fputc(n, fp);
+        }
+        EscreveArvore(elemento, arv->esq, fp);
+        EscreveArvore(elemento, arv->dir, fp);
+    }
+}
 int main(){
     int r;
     r = Chars("/Users/win/Documents/ED/Projeto_Final/Texto.txt");
@@ -380,6 +388,7 @@ int main(){
     tNo *arvore;
     IniciaArvore(&arvore);
 
+
     int i = 0;
     while(i < r){
         InsereElementoEmOrdem(&lista, elemento[i]);
@@ -387,6 +396,7 @@ int main(){
     }
     listateste = lista;
     ListaRepeticoes(&lista, &repeticao);
+    tRepeticao *rep = repeticao;
     CriaArvore(&arvore, &repeticao);
     int ar[10];
     i = 0;
@@ -395,11 +405,15 @@ int main(){
         i++;
     }
     int aux = 0;
-    CodificaArvore(arvore, ar, aux);
-    aux = 0;
-    i = 0;
     FILE *fp;
     fp = fopen("/Users/win/Documents/ED/Projeto_Final/Comprimido.txt", "w");
+    CodificaArvore(arvore, ar, aux, fp);
+    while(rep != NULL){
+        EscreveArvore(rep->elemento, arvore, fp);
+        rep = rep->proxalfa;
+    }
+    aux = 0;
+    i = 0;
     while(i < (r - 1)){
         i++;
         CodificaLista(arvore, elemento[i], aux, fp);

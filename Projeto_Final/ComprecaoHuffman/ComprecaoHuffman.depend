@@ -1,0 +1,20 @@
+# depslib dependency file v1.0
+1528586397 source:c:\users\win\documents\ed\projeto final\comprecaohuffman\comprecao.c
+	<stdio.h>
+	<stdlib.h>
+	"comprecao.h"
+	<math.h>
+
+1527722599 source:c:\users\win\documents\ed\teste.c
+	<stdio.h>
+
+1528583375 c:\users\win\documents\ed\projeto final\comprecaohuffman\comprecao.h
+
+1528819741 source:c:\users\win\documents\ed\projeto_final\comprecaohuffman\comprecao.c
+	<stdio.h>
+	<stdlib.h>
+	"comprecao.h"
+	<string.h>
+
+1528682935 c:\users\win\documents\ed\projeto_final\comprecaohuffman\comprecao.h
+

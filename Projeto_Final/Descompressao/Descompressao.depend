@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1528821862 source:c:\users\win\documents\ed\projeto_final\descompressao\descompressao.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"descompressao.h"
+
+1528764436 c:\users\win\documents\ed\projeto_final\descompressao\descompressao.h
+
